@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Code2, Crown, Flag, Swords, Trophy, Zap } from "lucide-react";
 
+import { PaymentModal } from "@/components/PaymentModal";
 import { Badge } from "@/components/ui/badge";
 import { currentUser } from "@/lib/mock-data";
+import { usePremium } from "@/lib/premium";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -16,6 +19,8 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const { isPremium } = usePremium();
+  const [paymentOpen, setPaymentOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/[0.06] bg-zinc-950/80 backdrop-blur-xl">
@@ -62,7 +67,7 @@ export function Navbar() {
 
         {/* User profile badge */}
         <div className="flex items-center gap-3">
-          {currentUser.isPremium ? (
+          {isPremium ? (
             <Badge
               variant="premium"
               className="hidden animate-shimmer bg-[linear-gradient(110deg,#a855f7,45%,#06b6d4,55%,#a855f7)] bg-[length:200%_100%] sm:inline-flex"
@@ -71,7 +76,10 @@ export function Navbar() {
               Premium
             </Badge>
           ) : (
-            <button className="hidden items-center gap-1 rounded-full border border-purple-500/50 bg-purple-500/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-purple-300 transition-all hover:bg-purple-500/20 hover:shadow-glow-purple sm:inline-flex">
+            <button
+              onClick={() => setPaymentOpen(true)}
+              className="hidden items-center gap-1 rounded-full border border-purple-500/50 bg-purple-500/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-purple-300 transition-all hover:bg-purple-500/20 hover:shadow-glow-purple sm:inline-flex"
+            >
               <Zap className="h-3 w-3" />
               Go Premium
             </button>
@@ -96,6 +104,8 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      <PaymentModal open={paymentOpen} onOpenChange={setPaymentOpen} />
     </header>
   );
 }

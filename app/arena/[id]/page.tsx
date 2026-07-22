@@ -5,15 +5,18 @@ import { ArenaClient } from "@/components/arena/ArenaClient";
 import { createMatch, getProblemById, problems } from "@/lib/mock-data";
 
 interface ArenaPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export function generateStaticParams() {
   return problems.map((problem) => ({ id: problem.id }));
 }
 
-export function generateMetadata({ params }: ArenaPageProps): Metadata {
-  const problem = getProblemById(params.id);
+export async function generateMetadata({
+  params,
+}: ArenaPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const problem = getProblemById(id);
   return {
     title: problem
       ? `${problem.title} — 1v1 Arena | Kodeon`
@@ -21,8 +24,9 @@ export function generateMetadata({ params }: ArenaPageProps): Metadata {
   };
 }
 
-export default function ArenaPage({ params }: ArenaPageProps) {
-  const problem = getProblemById(params.id);
+export default async function ArenaPage({ params }: ArenaPageProps) {
+  const { id } = await params;
+  const problem = getProblemById(id);
   if (!problem) notFound();
 
   const match = createMatch(problem.id);
