@@ -13,13 +13,21 @@ A high-energy, gamified **1v1 coding battle arena** MVP with a dark cyberpunk / 
 
 ## 🚀 How to Run (Step-by-Step Tutorial)
 
+Works on **Windows, macOS, and Linux** — the commands are the same everywhere; OS-specific notes are marked below.
+
 ### Prerequisites
 
-- **Node.js 20.9+** (Node 22 recommended) — check with `node --version`, download from [nodejs.org](https://nodejs.org)
+- **Node.js 20.9+** (Node 22 recommended) — check with `node --version`
+  - **Windows:** download the LTS installer from [nodejs.org](https://nodejs.org) (or run `winget install OpenJS.NodeJS.LTS` in PowerShell)
+  - **macOS:** `brew install node` or the installer from [nodejs.org](https://nodejs.org)
+  - **Linux:** use your package manager or [nvm](https://github.com/nvm-sh/nvm)
 - **npm** (bundled with Node.js) — check with `npm --version`
 - **Git** — check with `git --version`
+  - **Windows:** install [Git for Windows](https://git-scm.com/download/win) (or `winget install Git.Git`)
 
 ### 1. Clone the repository from GitHub
+
+Open a terminal (**Windows:** PowerShell or CMD · **macOS/Linux:** any shell) and run:
 
 ```bash
 git clone https://github.com/asuriii4/Deviator.git
@@ -41,6 +49,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser. The app hot-reloads as you edit files.
+
+> **Windows shortcut:** instead of steps 2–3 you can simply **double-click `start-windows.bat`** in the project folder — it checks for Node.js, installs dependencies on first run, opens your browser, and starts the dev server. On macOS/Linux the equivalent is `./start-unix.sh`.
 
 ### 4. (Optional) Run a production build
 
@@ -72,6 +82,14 @@ npm run start   # serve it on http://localhost:3000
 - **`next: command not found`** — run `npm install` first.
 - **Port 3000 already in use** — run `npm run dev -- -p 3001` and open `http://localhost:3001`.
 - **Editor doesn't load** — Monaco is fetched from a CDN on first load; make sure you're online.
+
+#### Windows-specific
+
+- **`npm.ps1 cannot be loaded because running scripts is disabled`** (PowerShell) — run PowerShell **as Administrator** and execute `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, then retry. Alternatively use CMD instead of PowerShell, or the `start-windows.bat` launcher.
+- **`node` / `npm` not recognized** — Node.js isn't on your PATH. Re-run the Node.js installer (it adds PATH entries by default) and open a **new** terminal window.
+- **Line-ending warnings from Git (`LF will be replaced by CRLF`)** — harmless; the repo ships a `.gitattributes` that keeps source files LF everywhere, so builds behave identically on Windows and Linux.
+- **Firewall prompt on first run** — Windows Defender may ask to allow Node.js to listen on the network; allow it for private networks so `localhost:3000` works.
+- **Path too long errors** — clone the repo close to the drive root (e.g. `C:\dev\Deviator`) or enable long paths: `git config --global core.longpaths true`.
 
 ## Features
 
@@ -122,4 +140,15 @@ lib/
   utils.ts               # cn(), clock formatting
 types/
   index.ts               # Shared domain types
+start-windows.bat        # One-click Windows launcher (install + dev server)
+start-unix.sh            # macOS / Linux launcher
 ```
+
+## Cross-Platform Notes
+
+The app runs natively on **Windows, macOS, and Linux** — no WSL or virtual machine needed on Windows:
+
+- All npm scripts (`dev`, `build`, `start`, `lint`) are plain Next.js CLI commands with no shell-specific syntax.
+- `.gitattributes` normalizes line endings (LF for source, CRLF for `.bat`), so checkouts behave identically on every OS.
+- No native/compiled dependencies — `npm install` needs no build tools on Windows.
+- `start-windows.bat` gives Windows users a double-click launcher; `start-unix.sh` does the same for macOS/Linux.
