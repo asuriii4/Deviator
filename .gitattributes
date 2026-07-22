@@ -1,0 +1,14 @@
+# Normalize line endings so the project works identically on Windows, macOS, and Linux.
+* text=auto eol=lf
+
+# Windows batch/cmd scripts must keep CRLF endings to run correctly.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets — never touch line endings.
+*.woff binary
+*.woff2 binary
+*.ico binary
+*.png binary
+*.jpg binary
+*.webp binary
