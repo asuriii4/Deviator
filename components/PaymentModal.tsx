@@ -130,14 +130,19 @@ export function PaymentModal({ open, onOpenChange }: PaymentModalProps) {
     timersRef.current = [];
   };
 
-  // Reset the flow whenever the modal is reopened.
+  // Reset the flow after the modal closes (delayed past the exit animation
+  // so the content doesn't visibly switch while fading out).
   useEffect(() => {
-    if (open) {
+    if (open) return clearTimers;
+    const resetTimer = setTimeout(() => {
       setStep("review");
       setStatusIndex(0);
       setCopied(false);
-    }
-    return clearTimers;
+    }, 320);
+    return () => {
+      clearTimeout(resetTimer);
+      clearTimers();
+    };
   }, [open]);
 
   const startPayment = () => {

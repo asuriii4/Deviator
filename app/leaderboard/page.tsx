@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Crown, Medal, Search, Swords, Trophy, Zap } from "lucide-react";
 
@@ -370,13 +371,13 @@ export default function LeaderboardPage() {
             </span>
           </span>
 
-          <a
+          <Link
             href="/"
             className="flex items-center gap-2 rounded-lg bg-cyan-500 px-4 py-2 text-xs font-bold text-zinc-950 transition-all hover:bg-cyan-400 hover:shadow-glow-cyan"
           >
             <Swords className="h-3.5 w-3.5" />
             Climb Higher
-          </a>
+          </Link>
         </div>
       </div>
     </div>

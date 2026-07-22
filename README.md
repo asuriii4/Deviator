@@ -34,32 +34,26 @@ git clone https://github.com/asuriii4/Deviator.git
 cd Deviator
 ```
 
-### 2. Install dependencies
-
-```bash
-npm install
-```
-
-This pulls in Next.js, Monaco Editor, Framer Motion, Radix UI, Tailwind, and everything else in `package.json`.
-
-### 3. Start the development server
+### 2. Start the development server
 
 ```bash
 npm run dev
 ```
 
+That's it — if dependencies aren't installed yet, this command **installs them automatically** first (a one-time step that takes a minute or two), then starts the server. You can still run `npm install` yourself beforehand if you prefer.
+
 Open [http://localhost:3000](http://localhost:3000) in your browser. The app hot-reloads as you edit files.
 
-> **Windows shortcut:** instead of steps 2–3 you can simply **double-click `start-windows.bat`** in the project folder — it checks for Node.js, installs dependencies on first run, opens your browser, and starts the dev server. On macOS/Linux the equivalent is `./start-unix.sh`.
+> **Windows shortcut:** instead of step 2 you can simply **double-click `start-windows.bat`** in the project folder — it checks for Node.js, installs dependencies on first run, opens your browser, and starts the dev server. On macOS/Linux the equivalent is `./start-unix.sh`.
 
-### 4. (Optional) Run a production build
+### 3. (Optional) Run a production build
 
 ```bash
 npm run build   # compile an optimized production bundle
 npm run start   # serve it on http://localhost:3000
 ```
 
-### 5. Take a tour
+### 4. Take a tour
 
 | Page | URL | What to try |
 | --- | --- | --- |
@@ -68,7 +62,7 @@ npm run start   # serve it on http://localhost:3000
 | Leaderboard | `/leaderboard` | Search players, switch Global / Weekly / Language filters |
 | Premium checkout | Navbar → **Go Premium** | Pay $50 in SOL (simulated) to unlock premium |
 
-### 6. Test the $50 crypto payment
+### 5. Test the $50 crypto payment
 
 1. Click **Go Premium** in the navbar (or **Unlock Full Solution with Premium** in the post-match modal).
 2. Review the order: **$50.00 ≈ SOL** at the mock exchange rate, with a QR code and merchant wallet address (click the address to copy it).
@@ -79,7 +73,7 @@ npm run start   # serve it on http://localhost:3000
 
 ### Troubleshooting
 
-- **`next: command not found`** — run `npm install` first.
+- **`'next' is not recognized...` / `next: command not found`** — dependencies aren't installed. `npm run dev` now auto-installs them; if you're on an older copy of the repo, run `npm install` once, then `npm run dev`.
 - **Port 3000 already in use** — run `npm run dev -- -p 3001` and open `http://localhost:3001`.
 - **Editor doesn't load** — Monaco is fetched from a CDN on first load; make sure you're online.
 

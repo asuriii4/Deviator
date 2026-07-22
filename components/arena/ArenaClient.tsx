@@ -106,12 +106,15 @@ export function ArenaClient({ match }: ArenaClientProps) {
   }, [status]);
 
   useEffect(() => {
-    if (timeRemaining === 0 && status === "active") {
+    if (timeRemaining !== 0 || status !== "active") return;
+    // Deferred so the state updates happen outside the effect's render pass.
+    const timeoutId = setTimeout(() => {
       finishMatch(
         playerTestsPassed === totalTests ? "victory" : "defeat",
         playerTestsPassed
       );
-    }
+    }, 0);
+    return () => clearTimeout(timeoutId);
   }, [timeRemaining, status, playerTestsPassed, totalTests, finishMatch]);
 
   useEffect(() => () => {
