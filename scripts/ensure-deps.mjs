@@ -28,3 +28,12 @@ if (!nextInstalled) {
     process.exit(1);
   }
 }
+
+// Make sure the locally-served Monaco Editor assets exist (postinstall does
+// this too, but this covers repos updated without re-running npm install).
+try {
+  execSync("node scripts/copy-monaco.mjs", { cwd: projectRoot, stdio: "inherit" });
+} catch {
+  console.error("  Could not prepare Monaco Editor assets — see the error above.");
+  process.exit(1);
+}

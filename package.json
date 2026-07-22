@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "node scripts/copy-monaco.mjs",
     "predev": "node scripts/ensure-deps.mjs",
     "dev": "next dev",
     "prebuild": "node scripts/ensure-deps.mjs",
@@ -22,6 +23,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.25.0",
+    "monaco-editor": "^0.52.2",
     "next": "^16.2.11",
     "react": "^18",
     "react-dom": "^18",
