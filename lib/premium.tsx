@@ -4,12 +4,31 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
 const STORAGE_KEY = "kodeon-premium";
+
+const listeners = new Set<() => void>();
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  // Sync premium status across browser tabs too.
+  window.addEventListener("storage", listener);
+  return () => {
+    listeners.delete(listener);
+    window.removeEventListener("storage", listener);
+  };
+}
+
+function getSnapshot() {
+  return window.localStorage.getItem(STORAGE_KEY) === "true";
+}
+
+function getServerSnapshot() {
+  return false;
+}
 
 interface PremiumContextValue {
   isPremium: boolean;
@@ -22,18 +41,11 @@ const PremiumContext = createContext<PremiumContextValue>({
 });
 
 export function PremiumProvider({ children }: { children: ReactNode }) {
-  const [isPremium, setIsPremium] = useState(false);
-
-  // Hydrate from localStorage after mount so SSR markup stays deterministic.
-  useEffect(() => {
-    if (window.localStorage.getItem(STORAGE_KEY) === "true") {
-      setIsPremium(true);
-    }
-  }, []);
+  const isPremium = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const unlockPremium = useCallback(() => {
-    setIsPremium(true);
     window.localStorage.setItem(STORAGE_KEY, "true");
+    listeners.forEach((listener) => listener());
   }, []);
 
   return (
