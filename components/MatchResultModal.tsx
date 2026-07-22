@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -16,9 +17,11 @@ import {
   Trophy,
 } from "lucide-react";
 
+import { PaymentModal } from "@/components/PaymentModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { usePremium } from "@/lib/premium";
 import { cn } from "@/lib/utils";
 import type { MatchResult, Problem, User } from "@/types";
 
@@ -39,6 +42,9 @@ export function MatchResultModal({
   user,
   onRematch,
 }: MatchResultModalProps) {
+  const { isPremium } = usePremium();
+  const [paymentOpen, setPaymentOpen] = useState(false);
+
   if (!result) return null;
 
   const isVictory = result.outcome === "victory";
@@ -194,14 +200,14 @@ export function MatchResultModal({
             <pre
               className={cn(
                 "max-h-64 overflow-auto p-4 font-mono text-[13px] leading-relaxed text-zinc-300",
-                !user.isPremium && "pointer-events-none select-none blur-[6px]"
+                !isPremium && "pointer-events-none select-none blur-[6px]"
               )}
-              aria-hidden={!user.isPremium}
+              aria-hidden={!isPremium}
             >
               <code>{solution.code}</code>
             </pre>
 
-            {!user.isPremium && (
+            {!isPremium && (
               <div className="absolute inset-x-0 bottom-0 top-9 flex flex-col items-center justify-center gap-3 bg-zinc-950/40 p-6 text-center">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full border border-purple-500/50 bg-purple-500/15 shadow-glow-purple">
                   <Lock className="h-5 w-5 text-purple-300" />
@@ -214,6 +220,7 @@ export function MatchResultModal({
                   variant="premium"
                   size="sm"
                   className="animate-shimmer bg-[linear-gradient(110deg,#a855f7,45%,#06b6d4,55%,#a855f7)] bg-[length:200%_100%]"
+                  onClick={() => setPaymentOpen(true)}
                 >
                   <Sparkles className="h-4 w-4" />
                   Unlock Full Solution with Premium
@@ -222,7 +229,7 @@ export function MatchResultModal({
             )}
           </div>
 
-          {user.isPremium && (
+          {isPremium && (
             <p className="mt-3 rounded-lg border border-white/[0.06] bg-zinc-900/60 p-3 text-xs leading-relaxed text-zinc-400">
               <span className="font-semibold text-purple-300">Why it works:</span>{" "}
               {solution.explanation}
@@ -249,6 +256,8 @@ export function MatchResultModal({
             </Link>
           </Button>
         </div>
+
+        <PaymentModal open={paymentOpen} onOpenChange={setPaymentOpen} />
       </DialogContent>
     </Dialog>
   );
