@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Editor from "@monaco-editor/react";
+import Editor, { loader } from "@monaco-editor/react";
+
+// Serve the Monaco runtime from our own server (copied to public/monaco by
+// scripts/copy-monaco.mjs) so the editor works on localhost with no CDN.
+loader.config({ paths: { vs: "/monaco/vs" } });
 import { AnimatePresence, motion } from "framer-motion";
 import {
   CheckCircle2,
